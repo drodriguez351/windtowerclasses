@@ -156,31 +156,19 @@ def min_temperature_per_day(october, bad_towers):
 
 bad_towers = {'\'0300\'','\'0412\'','\'1000\'','\'9404\''}
 
-def findMonthAvg(height_to_find): 
-    day_maxes = []; 
-    for day, day_obj in october.days.items(): 
-        day_max = 0; 
-        for tower in day_obj.towers.values():
-            for log in tower.logs:
-                if(log.height == height_to_find):
-                    if (log.temp > day_max and log.temp < 2000.0): 
-                        day_max = log.temp; 
-        day_maxes.append(day_max); 
-    
-    total = 0; 
-    print(len(day_maxes)); 
-    for max in day_maxes:
-        total += max;  
-        print(total); 
-    print(total); 
+maxes = max_temperature_per_day(october, bad_towers)
+mins = min_temperature_per_day(october, bad_towers)
 
-    total /= len(day_maxes); 
-    print(f"Average: {total}"); 
+# Open a file in write mode. Creates the file if it doesn't exist.
+fileone = open("themaxes.txt", "w")
+filetwo = open("themins.txt", "w")
 
+for key in maxes:
+    fileone.write(f"{key}: {maxes[key]}\n")
 
+for key in mins:
+    filetwo.write(f"{key}: {mins[key]}\n")
 
-printTower("'1000'")
-findMonthAvg(6)
-
-print(max_temperature_per_day(october, bad_towers))
-print(min_temperature_per_day(october, bad_towers))
+# Close the file
+fileone.close()
+filetwo.close()
