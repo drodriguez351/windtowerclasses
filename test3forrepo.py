@@ -47,6 +47,7 @@ class Day:
         self.towers[tower_id].addLog(log)
 
 
+
 class Month:
     def __init__(self, month):
         self.month = month
@@ -113,5 +114,40 @@ def printTower(tower_to_find):
             for log in day_obj.towers[tower_to_find].logs:
                 print(log)  # Assuming Log has a __str__ method for readable output
 
-printTower("'1000'")
+def max_temperature_per_day(october):
+    max_temps = {}  # Dictionary to store max temperature for each day
 
+    for day, day_obj in october.days.items():  # Loop through each day
+        max_temp = float('-inf')  # Initialize with lowest possible value
+
+        for tower in day_obj.towers.values():  # Loop through towers
+            for log in tower.logs:  # Loop through logs
+                if log.height == 6:  # Check if height is 6 feet
+                    max_temp = max(max_temp, log.temp)  # Update max
+
+        # Store the max temperature found for the day
+        if max_temp != float('-inf'):  # Ensure we found a valid temperature
+            max_temps[day] = max_temp
+
+    return max_temps
+
+def min_temperature_per_day(october):
+    min_temps = {}  # Dictionary to store min temperature for each day
+
+    for day, day_obj in october.days.items():  # Loop through each day
+        min_temp = float('inf')  # Initialize with highest possible value
+
+        for tower in day_obj.towers.values():  # Loop through towers
+            for log in tower.logs:  # Loop through logs
+                if log.height == 6 and log.temp != 0:  # Ignore 0 values
+                    min_temp = min(min_temp, log.temp)  # Update min
+
+        # Store the min temperature found for the day if it's valid
+        if min_temp != float('inf'):  # Ensure we found a valid temperature
+            min_temps[day] = min_temp
+
+    return min_temps
+
+
+print(max_temperature_per_day(october))
+print(min_temperature_per_day(october))
