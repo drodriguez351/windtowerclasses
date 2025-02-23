@@ -172,7 +172,8 @@ for key in mins:
 # Close the file
 fileone.close()
 filetwo.close()
-def findMaxMonthAvg(height_to_find): 
+
+def findMaxMonthAvgOne(height_to_find): 
     day_maxes = []; 
     for day, day_obj in october.days.items(): 
         day_max = 0; 
@@ -193,6 +194,15 @@ def findMaxMonthAvg(height_to_find):
     total /= len(day_maxes); 
     print(f"Average: {total}"); 
 
+def findMaxMonthAvg(october, bad_towers): 
+    max = max_temperature_per_day(october, bad_towers); 
+    total = 0; 
+    for max in max.values(): 
+        total += max; 
+    ans = total/len(max)
+    # print(f"min avg: {ans}");  // tester :D
+    return total/len(max); 
+
 def findMinMonthAvg(october, bad_towers): 
     mins = min_temperature_per_day(october, bad_towers); 
     total = 0; 
@@ -203,7 +213,6 @@ def findMinMonthAvg(october, bad_towers):
     return total/len(mins); 
 
 printTower("'1000'")
-findMaxMonthAvg(6)
 
 print(max_temperature_per_day(october, bad_towers)); 
 print(min_temperature_per_day(october, bad_towers)); 
