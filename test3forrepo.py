@@ -166,7 +166,7 @@ for key in mins:
 fileone.close()
 filetwo.close()
 
-def findMaxMonthAvg(height_to_find): 
+def findMaxMonthAvgOne(height_to_find): # old function
     day_maxes = []
     for day, day_obj in month.days.items(): 
         day_max = 0
@@ -195,7 +195,17 @@ def findMinMonthAvg(month, bad_towers):
     ans = round(ans, 2)
     print(f"Min Average: {ans}")
     return total/len(mins)
+
+def findMaxMonthAvg(month, bad_towers): 
+    maxes = max_temperature_per_day(month, bad_towers) 
+    total = 0 
+    for max in maxes.values(): 
+        total += max 
+    ans = total/len(maxes)
+    ans = round(ans, 2)
+    # print(f"Max Average: {ans}") tester
+    return total/len(maxes)
     
 
-findMaxMonthAvg(6)
+# findMaxMonthAvg(6)
 findMinMonthAvg(month, bad_towers)
