@@ -156,7 +156,7 @@ def min_temperature_per_day(october, bad_towers):
 
 bad_towers = {'\'0300\'','\'0412\'','\'1000\'','\'9404\''}
 
-def findMonthAvg(height_to_find): 
+def findMaxMonthAvg(height_to_find): 
     day_maxes = []; 
     for day, day_obj in october.days.items(): 
         day_max = 0; 
@@ -177,10 +177,18 @@ def findMonthAvg(height_to_find):
     total /= len(day_maxes); 
     print(f"Average: {total}"); 
 
-
+def findMinMonthAvg(october, bad_towers): 
+    mins = min_temperature_per_day(october, bad_towers); 
+    total = 0; 
+    for min in mins.values(): 
+        total += min; 
+    ans = total/len(mins)
+    # print(f"min avg: {ans}");  // tester :D
+    return total/len(mins); 
 
 printTower("'1000'")
-findMonthAvg(6)
+findMaxMonthAvg(6)
 
-print(max_temperature_per_day(october, bad_towers))
-print(min_temperature_per_day(october, bad_towers))
+print(max_temperature_per_day(october, bad_towers)); 
+print(min_temperature_per_day(october, bad_towers)); 
+findMinMonthAvg(october, bad_towers); 
