@@ -69,7 +69,7 @@ with open('2020_10.txt', 'r') as file:
         data.append(values)
 
 # Store logs by month
-october = Month("October")
+month = Month("October")
 
 # chatGPT code:
 
@@ -93,19 +93,12 @@ for line in data:
 
     log = Log(time, height, avgMin, avgWindDir, avgWindSpeed, peakWindDir, peakWindSpeed, peakWindDir10, peakWindSpeed10, deviation, temp, tempdiff, dewpoint, relHumidity, baroPressure)
 
-    october.addLog(time.split()[0], tower_id, log)  # Group by day
-
-# Print stored logs for validation
-
-#for day, day_obj in october.days.items():
- #   print(f"Date: {day}")
-  #  for tower_id, tower in day_obj.towers.items():
-   #     print(f"  Tower {tower_id}: {len(tower.logs)} logs")
+    month.addLog(time.split()[0], tower_id, log)  # Group by day
 
 def printTower(tower_to_find):
     # Loop through each day in the stored logs
     
-    for day, day_obj in october.days.items():
+    for day, day_obj in month.days.items():
         # Check if Tower 1000 exists in that day's data
         if tower_to_find in day_obj.towers:
             print(f"Date: {day}, Tower {tower_to_find}")
@@ -114,10 +107,10 @@ def printTower(tower_to_find):
             for log in day_obj.towers[tower_to_find].logs:
                 print(log)  # Assuming Log has a __str__ method for readable output
 
-def max_temperature_per_day(october, bad_towers):
+def max_temperature_per_day(month, bad_towers):
     max_temps = {}  # Dictionary to store max temperature for each day
 
-    for day, day_obj in october.days.items():  # Loop through each day
+    for day, day_obj in month.days.items():  # Loop through each day
         max_temp = float('-inf')  # Initialize with lowest possible value
 
         for tower in day_obj.towers.values():  # Loop through towers
@@ -135,10 +128,10 @@ def max_temperature_per_day(october, bad_towers):
     return max_temps
 
 
-def min_temperature_per_day(october, bad_towers):
+def min_temperature_per_day(month, bad_towers):
     min_temps = {}  # Dictionary to store min temperature for each day
 
-    for day, day_obj in october.days.items():  # Loop through each day
+    for day, day_obj in month.days.items():  # Loop through each day
         min_temp = float('inf')  # Initialize with highest possible value
 
         for tower in day_obj.towers.values():  # Loop through towers
@@ -156,10 +149,10 @@ def min_temperature_per_day(october, bad_towers):
 
 bad_towers = {'\'0300\'','\'0412\'','\'1000\'','\'9404\''}
 
-maxes = max_temperature_per_day(october, bad_towers)
-mins = min_temperature_per_day(october, bad_towers)
+maxes = max_temperature_per_day(month, bad_towers)
+mins = min_temperature_per_day(month, bad_towers)
 
-# Open a file in write mode. Creates the file if it doesn't exist.
+
 fileone = open("themaxes.txt", "w")
 filetwo = open("themins.txt", "w")
 
@@ -172,39 +165,37 @@ for key in mins:
 # Close the file
 fileone.close()
 filetwo.close()
+
 def findMaxMonthAvg(height_to_find): 
-    day_maxes = []; 
-    for day, day_obj in october.days.items(): 
-        day_max = 0; 
+    day_maxes = []
+    for day, day_obj in month.days.items(): 
+        day_max = 0
         for tower in day_obj.towers.values():
             for log in tower.logs:
                 if(log.height == height_to_find):
                     if (log.temp > day_max and log.temp < 2000.0): 
-                        day_max = log.temp; 
-        day_maxes.append(day_max); 
-    
+                        day_max = log.temp
+        day_maxes.append(day_max)
+
     total = 0; 
-    print(len(day_maxes)); 
     for max in day_maxes:
-        total += max;  
-        print(total); 
-    print(total); 
+        total += max
 
-    total /= len(day_maxes); 
-    print(f"Average: {total}"); 
+    total /= len(day_maxes)
+    total = round(total, 2)
+    print(f"Max Average: {total}") 
+    return total
 
-def findMinMonthAvg(october, bad_towers): 
-    mins = min_temperature_per_day(october, bad_towers); 
-    total = 0; 
+def findMinMonthAvg(month, bad_towers): 
+    mins = min_temperature_per_day(month, bad_towers) 
+    total = 0 
     for min in mins.values(): 
-        total += min; 
+        total += min 
     ans = total/len(mins)
-    # print(f"min avg: {ans}");  // tester :D
-    return total/len(mins); 
+    ans = round(ans, 2)
+    print(f"Min Average: {ans}")
+    return total/len(mins)
+    
 
-printTower("'1000'")
 findMaxMonthAvg(6)
-
-print(max_temperature_per_day(october, bad_towers)); 
-print(min_temperature_per_day(october, bad_towers)); 
-findMinMonthAvg(october, bad_towers); 
+findMinMonthAvg(month, bad_towers)
