@@ -156,6 +156,22 @@ def min_temperature_per_day(october, bad_towers):
 
 bad_towers = {'\'0300\'','\'0412\'','\'1000\'','\'9404\''}
 
+maxes = max_temperature_per_day(october, bad_towers)
+mins = min_temperature_per_day(october, bad_towers)
+
+# Open a file in write mode. Creates the file if it doesn't exist.
+fileone = open("themaxes.txt", "w")
+filetwo = open("themins.txt", "w")
+
+for key in maxes:
+    fileone.write(f"{key}: {maxes[key]}\n")
+
+for key in mins:
+    filetwo.write(f"{key}: {mins[key]}\n")
+
+# Close the file
+fileone.close()
+filetwo.close()
 def findMaxMonthAvg(height_to_find): 
     day_maxes = []; 
     for day, day_obj in october.days.items(): 
