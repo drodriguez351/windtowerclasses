@@ -47,6 +47,7 @@ class Day:
         self.towers[tower_id].addLog(log)
 
 
+
 class Month:
     def __init__(self, month):
         self.month = month
@@ -113,15 +114,18 @@ def printTower(tower_to_find):
             for log in day_obj.towers[tower_to_find].logs:
                 print(log)  # Assuming Log has a __str__ method for readable output
 
-def max_temperature_per_day(october):
+def max_temperature_per_day(october, bad_towers):
     max_temps = {}  # Dictionary to store max temperature for each day
 
     for day, day_obj in october.days.items():  # Loop through each day
         max_temp = float('-inf')  # Initialize with lowest possible value
 
         for tower in day_obj.towers.values():  # Loop through towers
+            if tower.tower in bad_towers:  # Skip bad towers
+                continue
+
             for log in tower.logs:  # Loop through logs
-                if log.height == 6:  # Check if height is 6 feet
+                if log.height == 6 and log.temp >= 10 and log.temp <= 110:  # Check if height is 6 feet
                     max_temp = max(max_temp, log.temp)  # Update max
 
         # Store the max temperature found for the day
@@ -130,13 +134,16 @@ def max_temperature_per_day(october):
 
     return max_temps
 
-def min_temperature_per_day(october):
+
+def min_temperature_per_day(october, bad_towers):
     min_temps = {}  # Dictionary to store min temperature for each day
 
     for day, day_obj in october.days.items():  # Loop through each day
         min_temp = float('inf')  # Initialize with highest possible value
 
         for tower in day_obj.towers.values():  # Loop through towers
+            if tower.tower in bad_towers:  # Skip bad towers
+                continue
             for log in tower.logs:  # Loop through logs
                 if log.height == 6 and log.temp != 0:  # Ignore 0 values
                     min_temp = min(min_temp, log.temp)  # Update min
@@ -147,28 +154,7 @@ def min_temperature_per_day(october):
 
     return min_temps
 
-def findMonthAvg(height_to_find): 
-    day_maxes = []; 
-    for day, day_obj in october.days.items(): 
-        day_max = 0; 
-        for tower in day_obj.towers.values():
-            for log in tower.logs:
-                if(log.height == height_to_find):
-                    if (log.temp > day_max and log.temp < 2000.0): 
-                        day_max = log.temp; 
-        day_maxes.append(day_max); 
-    
-    total = 0; 
-    print(len(day_maxes)); 
-    for max in day_maxes:
-        total += max;  
-        print(total); 
-    print(total); 
+bad_towers = {'\'0300\'','\'0412\'','\'1000\'','\'9404\''}
 
-    total /= len(day_maxes); 
-    print(f"Average: {total}"); 
-
-
-
-# printTower("'1000'")
-findMonthAvg(6)
+print(max_temperature_per_day(october, bad_towers))
+print(min_temperature_per_day(october, bad_towers))
