@@ -35,7 +35,6 @@ class Tower:
     def addLog(self, log):
         self.logs.append(log)
 
-
 class Day:
     def __init__(self, day):
         self.day = day
@@ -47,7 +46,6 @@ class Day:
         self.towers[tower_id].addLog(log)
 
 
-
 class Month:
     def __init__(self, month):
         self.month = month
@@ -57,6 +55,16 @@ class Month:
         if date not in self.days:
             self.days[date] = Day(date)
         self.days[date].addLog(tower_id, log)
+
+class Year: 
+    def __init__(self, year):
+        self.year = year
+        self.months = {}  # Store months by num
+
+    def addLog(self, month, date, tower_id, log):
+        if month not in self.months:
+            self.months[month] = Month(month); 
+        self.months[month].addLog(date, tower_id, log)
 
 def get_all_towers(monthobj):
     towerlist = []
