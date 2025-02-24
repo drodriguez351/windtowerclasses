@@ -345,8 +345,8 @@ def findMaxMonthAvg(month, bad_towers):
 maxmonthavg = findMaxMonthAvg(month, newlist)
 minmonthavg = findMinMonthAvg(month, newlist)
 
-fileone.write(f"Monthly MAX AVG Temp: {round(maxmonthavg, 2)}\n")
-filetwo.write(f"Monthly MIN AVG Temp: {round(minmonthavg, 2)}\n")
+fileone.write(f"MAXAVG: {round(maxmonthavg, 2)}\n")
+filetwo.write(f"MINAVG: {round(minmonthavg, 2)}\n")
 
 minofmins = min(mins.values())
 maxofmaxes = max(maxes.values())
