@@ -293,13 +293,6 @@ mins = min_temperature_per_day(month, newlist)
 
 
 fileone = open(filename + "_maxes.txt", "w")
-filetwo = open(filename + "_mins.txt", "w")
-
-for key in maxes:
-    fileone.write(f"{key}: {maxes[key]}\n")
-
-for key in mins:
-    filetwo.write(f"{key}: {mins[key]}\n")
 
 def findMaxMonthAvgOne(height_to_find): # old function
     day_maxes = []
@@ -345,18 +338,21 @@ def findMaxMonthAvg(month, bad_towers):
 maxmonthavg = findMaxMonthAvg(month, newlist)
 minmonthavg = findMinMonthAvg(month, newlist)
 
-fileone.write(f"MAXAVG: {round(maxmonthavg, 2)}\n")
-filetwo.write(f"MINAVG: {round(minmonthavg, 2)}\n")
-
 minofmins = min(mins.values())
 maxofmaxes = max(maxes.values())
 
-fileone.write(f"Max: {maxofmaxes}")
-filetwo.write(f"Min: {minofmins}")
+fileone.write(f"{maxofmaxes},{minofmins},{round(maxmonthavg,2)},{round(minmonthavg,2)}\n")
+
+fileone.write(f"Maxes:\n")
+for key in maxes:
+    fileone.write(f"{key}: {maxes[key]}\n")
+
+fileone.write(f"Mins:\n")
+for key in mins:
+    fileone.write(f"{key}: {mins[key]}\n")
 
 # Close the file
 fileone.close()
-filetwo.close()
 
 
 
