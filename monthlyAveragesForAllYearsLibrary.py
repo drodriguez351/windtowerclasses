@@ -372,34 +372,9 @@ maxes = max_temperature_per_day(monthlist, newlist)
 mins = min_temperature_per_day(monthlist, newlist)
 
 
-fileone = open(m + "_maxes.txt", "w")
-filetwo = open(m + "_mins.txt", "w")
+fileone = open(m + "_allyears.txt", "w")
 
-for key in maxes:
-    fileone.write(f"{key}: {maxes[key]}\n")
 
-for key in mins:
-    filetwo.write(f"{key}: {mins[key]}\n")
-
-def findMaxMonthAvgAllYearsOne(height_to_find): # old function
-    day_maxes = []
-    for day, day_obj in month.days.items(): 
-        day_max = 0
-        for tower in day_obj.towers.values():
-            for log in tower.logs:
-                if(log.height == height_to_find):
-                    if (log.temp > day_max and log.temp < 2000.0): 
-                        day_max = log.temp
-        day_maxes.append(day_max)
-
-    total = 0; 
-    for max in day_maxes:
-        total += max
-
-    total /= len(day_maxes)
-    total = round(total, 2)
-    print(f"Max Average: {total}") 
-    return total
 
 def findMinMonthAvgAllYears(monthlist, bad_towers): 
     mins = min_temperature_per_day(monthlist, bad_towers) 
@@ -425,18 +400,13 @@ def findMaxMonthAvgAllYears(monthlist, bad_towers):
 maxmonthavg = findMaxMonthAvgAllYears(monthlist, newlist)
 minmonthavg = findMinMonthAvgAllYears(monthlist, newlist)
 
-fileone.write(f"MAXAVG: {round(maxmonthavg, 2)}\n")
-filetwo.write(f"MINAVG: {round(minmonthavg, 2)}\n")
-
 minofmins = min(mins.values())
 maxofmaxes = max(maxes.values())
 
-fileone.write(f"Max: {maxofmaxes}")
-filetwo.write(f"Min: {minofmins}")
+fileone.write(f"{minofmins},{maxofmaxes},{round(maxmonthavg, 2)},{round(minmonthavg, 2)}")
 
 # Close the file
 fileone.close()
-filetwo.close()
 
 
 
