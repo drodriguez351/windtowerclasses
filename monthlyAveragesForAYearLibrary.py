@@ -1,7 +1,9 @@
+import math
+
 # CLASSES
 
 class Log:
-    def __init__(self, time, height, avgMin, avgWindDir, avgWindSpeed, peakWindDir, peakWindSpeed, peakWindDir10, peakWindSpeed10, deviation, temp, tempdiff, dewpoint, relHumidity, baroPressure):
+    def __init__(self, time, height, avgMin, avgWindDir, avgWindSpeed, peakWindDir, peakWindSpeed, peakWindDir10, peakWindSpeed10, deviation, temp, tempdiff, dewpoint, relHumidity, baroPressure, u, v):
         self.time = time
         self.height = height
         self.avgMin = avgMin
@@ -17,6 +19,8 @@ class Log:
         self.dewpoint = dewpoint
         self.relHumidity = relHumidity
         self.baroPressure = baroPressure
+        self.u = u
+        self.v = v
 
     def __str__(self):  # Fixed __str__ method
         return (f'Time: {self.time}, Height: {self.height}, Average Minute: {self.avgMin}, '
@@ -107,8 +111,14 @@ for line in data:
     dewpoint = float(line[13].strip('"')) if line[13].strip('"') else 0
     relHumidity = int(line[14].strip('"')) if line[14].strip('"') else 0
     baroPressure = line[15].strip('"') if line[15].strip('"') else 0
+    if avgWindDir != '':
+        u = -abs(avgWindSpeed) * math.sin(int(avgWindDir))
+        v = -abs(avgWindSpeed) * math.cos(int(avgWindDir))
+    else:
+        u = -1
+        v = -1
 
-    log = Log(time, height, avgMin, avgWindDir, avgWindSpeed, peakWindDir, peakWindSpeed, peakWindDir10, peakWindSpeed10, deviation, temp, tempdiff, dewpoint, relHumidity, baroPressure)
+    log = Log(time, height, avgMin, avgWindDir, avgWindSpeed, peakWindDir, peakWindSpeed, peakWindDir10, peakWindSpeed10, deviation, temp, tempdiff, dewpoint, relHumidity, baroPressure, u, v)
 
     month.addLog(time.split()[0], tower_id, log)  # Group by day
 
@@ -292,7 +302,7 @@ maxes = max_temperature_per_day(month, newlist)
 mins = min_temperature_per_day(month, newlist)
 
 
-fileone = open(filename + "_maxes.txt", "w")
+fileone = open(filename + "_mafay.txt", "w")
 
 def findMaxMonthAvgOne(height_to_find): # old function
     day_maxes = []
