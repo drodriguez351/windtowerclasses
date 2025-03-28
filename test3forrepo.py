@@ -1,4 +1,5 @@
 # CLASSES
+# future work: error checking, scaling for more data, and the VBA gui
 
 class Log:
     def __init__(self, time, height, avgMin, avgWindDir, avgWindSpeed, peakWindDir, peakWindSpeed, peakWindDir10, peakWindSpeed10, deviation, temp, tempdiff, dewpoint, relHumidity, baroPressure):
