@@ -1,7 +1,9 @@
+import math
+
 # CLASSES
 
 class Log:
-    def __init__(self, time, height, avgMin, avgWindDir, avgWindSpeed, peakWindDir, peakWindSpeed, peakWindDir10, peakWindSpeed10, deviation, temp, tempdiff, dewpoint, relHumidity, baroPressure):
+    def __init__(self, time, height, avgMin, avgWindDir, avgWindSpeed, peakWindDir, peakWindSpeed, peakWindDir10, peakWindSpeed10, deviation, temp, tempdiff, dewpoint, relHumidity, baroPressure, u, v):
         self.time = time
         self.height = height
         self.avgMin = avgMin
@@ -17,6 +19,8 @@ class Log:
         self.dewpoint = dewpoint
         self.relHumidity = relHumidity
         self.baroPressure = baroPressure
+        self.u = u
+        self.v = v
 
     def __str__(self):  # Fixed __str__ method
         return (f'Time: {self.time}, Height: {self.height}, Average Minute: {self.avgMin}, '
@@ -107,8 +111,14 @@ for line in data:
     dewpoint = float(line[13].strip('"')) if line[13].strip('"') else 0
     relHumidity = int(line[14].strip('"')) if line[14].strip('"') else 0
     baroPressure = line[15].strip('"') if line[15].strip('"') else 0
+    if avgWindDir != '':
+        u = -abs(avgWindSpeed) * math.sin(int(avgWindDir))
+        v = -abs(avgWindSpeed) * math.cos(int(avgWindDir))
+    else:
+        u = -1
+        v = -1
 
-    log = Log(time, height, avgMin, avgWindDir, avgWindSpeed, peakWindDir, peakWindSpeed, peakWindDir10, peakWindSpeed10, deviation, temp, tempdiff, dewpoint, relHumidity, baroPressure)
+    log = Log(time, height, avgMin, avgWindDir, avgWindSpeed, peakWindDir, peakWindSpeed, peakWindDir10, peakWindSpeed10, deviation, temp, tempdiff, dewpoint, relHumidity, baroPressure, u, v)
 
     month.addLog(time.split()[0], tower_id, log)  # Group by day
 
@@ -292,14 +302,7 @@ maxes = max_temperature_per_day(month, newlist)
 mins = min_temperature_per_day(month, newlist)
 
 
-fileone = open(filename + "_maxes.txt", "w")
-filetwo = open(filename + "_mins.txt", "w")
-
-for key in maxes:
-    fileone.write(f"{key}: {maxes[key]}\n")
-
-for key in mins:
-    filetwo.write(f"{key}: {mins[key]}\n")
+fileone = open(filename + "_mafay.txt", "w")
 
 def findMaxMonthAvgOne(height_to_find): # old function
     day_maxes = []
@@ -345,18 +348,21 @@ def findMaxMonthAvg(month, bad_towers):
 maxmonthavg = findMaxMonthAvg(month, newlist)
 minmonthavg = findMinMonthAvg(month, newlist)
 
-fileone.write(f"MAXAVG: {round(maxmonthavg, 2)}\n")
-filetwo.write(f"MINAVG: {round(minmonthavg, 2)}\n")
-
 minofmins = min(mins.values())
 maxofmaxes = max(maxes.values())
 
-fileone.write(f"Max: {maxofmaxes}")
-filetwo.write(f"Min: {minofmins}")
+fileone.write(f"{maxofmaxes},{minofmins},{round(maxmonthavg,2)},{round(minmonthavg,2)}\n")
+
+fileone.write(f"Maxes:\n")
+for key in maxes:
+    fileone.write(f"{key}: {maxes[key]}\n")
+
+fileone.write(f"Mins:\n")
+for key in mins:
+    fileone.write(f"{key}: {mins[key]}\n")
 
 # Close the file
 fileone.close()
-filetwo.close()
 
 
 
